@@ -16,7 +16,7 @@ public class EmployeeDTO {
     private Department department;
 
     // CONSTANT ROLES
-    private enum Department {
+    public enum Department {
         IT,
         ADMIN,
         HR,

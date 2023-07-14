@@ -3,6 +3,7 @@ package com.example.webhelpdesksystem.servicesImpl;
 import com.example.webhelpdesksystem.dto.EmployeeDTO;
 import com.example.webhelpdesksystem.exception.EmployeeNotFoundException;
 import com.example.webhelpdesksystem.exception.EmployeeWithTicketDeletionException;
+import com.example.webhelpdesksystem.mapper.EmployeeMapper;
 import com.example.webhelpdesksystem.model.Employee;
 import com.example.webhelpdesksystem.model.Ticket;
 import com.example.webhelpdesksystem.repository.EmployeeRepository;
@@ -19,7 +20,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     final EmployeeRepository employeeRepository;
     final TicketRepository ticketRepository;
-    final ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
+    private final EmployeeMapper mapper;
+
 
     @Autowired
     public EmployeeServiceImpl(EmployeeRepository employeeRepository,
@@ -28,6 +31,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         this.employeeRepository = employeeRepository;
         this.ticketRepository = ticketRepository;
         this.modelMapper = modelMapper;
+        this.mapper = EmployeeMapper.INSTANCE;
     }
 
     // GET - VIEW AN EMPLOYEE
@@ -35,7 +39,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public EmployeeDTO viewEmployee(Long employeeId) throws EmployeeNotFoundException{
         Employee employee = employeeRepository.findById(employeeId).
                 orElseThrow(()-> new EmployeeNotFoundException("Employee not found."));
-        return this.modelMapper.map(employee, EmployeeDTO.class);
+        return this.mapper.mapEmployeeToDTO(employee);
     }
 
     // GET - LIST OF EMPLOYEES
@@ -49,25 +53,24 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     // POST - CREATE EMPLOYEE
     @Override
-    public EmployeeDTO createEmployee(Employee newEmployee) {
+    public EmployeeDTO createEmployee(EmployeeDTO newEmployeeDTO) {
+        Employee newEmployee = this.mapper.mapDTOToEmployee(newEmployeeDTO);
         Employee employee = employeeRepository.save(newEmployee);
-        return this.modelMapper.map(employee, EmployeeDTO.class);
+        return this.mapper.mapEmployeeToDTO(employee);
     }
 
     // PUT  - UPDATE AN EMPLOYEE
     @Override
-    public EmployeeDTO updateEmployee(Long employeeId, Employee newEmployeeDetails) throws EmployeeNotFoundException{
+    public EmployeeDTO updateEmployee(Long employeeId, EmployeeDTO newEmployeeDTODetails) throws EmployeeNotFoundException{
         Employee employee = employeeRepository.findById(employeeId)
                 .orElseThrow(() -> new EmployeeNotFoundException("Employee ID: " + employeeId + " not found"));
 
-        // PROCESS TO UPDATE THE OLD EMPLOYEE DETAILS
-        this.modelMapper.map(newEmployeeDetails,employee);
-
-        // PROCESS TO SAVE DATA TO DATABASE
+        this.mapper.updateEmployeeDetails(newEmployeeDTODetails,employee);
         employeeRepository.save(employee);
-
-        return this.modelMapper.map(employee, EmployeeDTO.class);
+        return this.mapper.mapEmployeeToDTO(employee);
     }
+
+
 
     //  DELETE - DELETE A TICKET
     @Override

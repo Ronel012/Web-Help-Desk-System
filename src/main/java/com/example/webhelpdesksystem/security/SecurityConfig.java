@@ -1,7 +1,5 @@
 package com.example.webhelpdesksystem.security;
 
-import com.example.webhelpdesksystem.repository.EmployeeRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -18,41 +16,13 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity
+@EnableMethodSecurity()
 public class SecurityConfig  {
-
-    // FILTER THE END POINT
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http.csrf().disable()
-                .authorizeHttpRequests()
-
-                // EMPLOYEE
-                .antMatchers(HttpMethod.GET, "/employees").hasRole("USER")
-                .antMatchers(HttpMethod.GET, "/employees/**").hasRole("USER")
-                .antMatchers(HttpMethod.POST, "/employees").hasRole("ADMIN")
-                .antMatchers(HttpMethod.PUT, "/employees/**").hasRole("ADMIN")
-                .antMatchers(HttpMethod.DELETE, "/employees").hasRole("ADMIN")
-
-                // TICKET
-                .antMatchers(HttpMethod.GET, "/tickets").hasRole("USER")
-                .antMatchers(HttpMethod.GET, "/tickets/**").hasRole("USER")
-                .antMatchers(HttpMethod.GET, "/tickets/employee/**").hasRole("USER")
-                .antMatchers(HttpMethod.GET, "/tickets/**/watchers").hasRole("USER")
-                .antMatchers(HttpMethod.POST, "/tickets").hasRole("ADMIN")
-                .antMatchers(HttpMethod.PUT, "/tickets/**").hasRole("ADMIN")
-                .antMatchers(HttpMethod.DELETE, "/tickets/**").hasRole("ADMIN")
-
-                .and()
-                .formLogin()
-                .and()
-                .build();
-    }
 
     // AUTHENTICATION
     // HARD CODED
     @Bean
-    public UserDetailsService userDetailsService() {
+    public UserDetailsService userDetailsService(PasswordEncoder encoder) {
 
         // ADMIN
         UserDetails admin = User
@@ -76,6 +46,19 @@ public class SecurityConfig  {
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
+    }
+
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        return http
+                .csrf().disable()
+                .authorizeHttpRequests()
+                .anyRequest()
+                .authenticated()
+                .and()
+                .httpBasic()
+                .and().build();
     }
 
 //    END OF CLASS

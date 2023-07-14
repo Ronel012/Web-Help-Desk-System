@@ -21,52 +21,50 @@ public class EmployeeController {
     }
 
     // POST - CREATE EMPLOYEE
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/employees")
-    public ResponseEntity<EmployeeDTO> createEmployee(@RequestBody Employee newEmployee){
-        EmployeeDTO employeeDTO = employeeService.createEmployee(newEmployee);
-
+    public ResponseEntity<EmployeeDTO> createEmployee(@RequestBody EmployeeDTO newEmployeeDTO){
+        EmployeeDTO employeeDTO = employeeService.createEmployee(newEmployeeDTO);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(employeeDTO);
     }
 
     // PUT - UPDATE EMPLOYEE
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/employees/{employeeId}")
-    public ResponseEntity<EmployeeDTO> updateEmployee(@PathVariable Long employeeId, @RequestBody Employee updatedEmployee){
-        EmployeeDTO updatedEmployeeInfo = employeeService.updateEmployee(employeeId, updatedEmployee);
+    public ResponseEntity<EmployeeDTO> updateEmployee(@PathVariable Long employeeId, @RequestBody EmployeeDTO newEmployeeDTODetails){
+        EmployeeDTO updatedEmployeeInfo = employeeService.updateEmployee(employeeId, newEmployeeDTODetails);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(updatedEmployeeInfo);
     }
 
     // GET - VIEW EMPLOYEE BY EMPLOYEE ID
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('USER')")
     @GetMapping("/employees/{employeeId}")
     public ResponseEntity<EmployeeDTO> viewEmployee(@PathVariable Long employeeId){
         EmployeeDTO employee = employeeService.viewEmployee(employeeId);
-
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(employee);
     }
 
     // GET - VIEW LIST OF EMPLOYEES
+    @PreAuthorize("hasRole('USER')")
     @GetMapping("/employees")
     public ResponseEntity<List<EmployeeDTO>> listEmployees(){
         List<EmployeeDTO> employees = employeeService.listEmployees();
-
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(employees);
     }
 
     // DEL - DELETE AN EMPLOYEE
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/employees/{employeeId}")
     public ResponseEntity<Void> deleteEmployee(@PathVariable("employeeId") Long employeeId){
-
+        employeeService.deleteEmployee(employeeId);
         return ResponseEntity
                 .status(HttpStatus.ACCEPTED)
                 .build();

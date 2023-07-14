@@ -9,7 +9,7 @@ import java.util.List;
 public interface EmployeeService {
 
     // POST - CREATE NEW EMPLOYEE
-    EmployeeDTO createEmployee(Employee newEmployee);
+    EmployeeDTO createEmployee(EmployeeDTO employeeDTO);
 
     // GET - VIEW AN EMPLOYEE
     EmployeeDTO viewEmployee(Long employeeId) throws EmployeeNotFoundException;
@@ -18,7 +18,7 @@ public interface EmployeeService {
     List<EmployeeDTO> listEmployees();
 
     // PUT - UPDATE EMPLOYEE
-    EmployeeDTO updateEmployee(Long employeeId, Employee updatedEmployee) throws EmployeeNotFoundException;
+    EmployeeDTO updateEmployee(Long employeeId, EmployeeDTO newEmployeeDTODetails) throws EmployeeNotFoundException;
 
     // DEL - DELETE AN EMPLOYEE
     void deleteEmployee(Long employeeId) throws EmployeeWithTicketDeletionException, EmployeeNotFoundException;
