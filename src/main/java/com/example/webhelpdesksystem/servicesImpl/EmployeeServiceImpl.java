@@ -47,8 +47,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     public List<EmployeeDTO> listEmployees() {
         List<Employee> employeeList = (List<Employee>) employeeRepository.findAll();
         // from compile time to run time
-        TypeToken<List<EmployeeDTO>> employeeDTOListTypeToken = new TypeToken<>() {};
-        return this.modelMapper.map(employeeList, employeeDTOListTypeToken.getType());
+        return this.mapper.updateListEmployeeToDTO(employeeList);
+//        TypeToken<List<EmployeeDTO>> employeeDTOListTypeToken = new TypeToken<>() {};
+//        return this.modelMapper.map(employeeList, employeeDTOListTypeToken.getType());
     }
 
     // POST - CREATE EMPLOYEE

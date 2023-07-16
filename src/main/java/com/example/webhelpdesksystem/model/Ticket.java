@@ -51,7 +51,7 @@ public class Ticket {
     // JPA WILL SAVE DATA FROM ENUM TYPE TO STRING TYPE
     // JPA WILL RETURN THE TYPE FROM STRING TO ENUM TYPE WHEN RETRIEVED
     // CONSTANT SEVERITY
-    private enum Severity {
+    public enum Severity {
         LOW,
         NORMAL,
         MAJOR,
@@ -60,7 +60,7 @@ public class Ticket {
 
     // CONST STATUS
     //New, Assigned, In-Progress, Closed = ENUM
-    private enum Status {
+    public enum Status {
         NEW,
         ASSIGNED,
         IN_PROGRESS,

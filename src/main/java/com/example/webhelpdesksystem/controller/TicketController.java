@@ -66,7 +66,7 @@ public class TicketController {
     // POST  - CREATE TICKET
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/tickets")
-    public ResponseEntity<TicketDTO> createTicket(@RequestBody Ticket ticket){
+    public ResponseEntity<TicketDTO> createTicket(@RequestBody TicketDTO ticket){
         TicketDTO newTicket =  ticketService.createTicket(ticket);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -76,7 +76,7 @@ public class TicketController {
     // PUT  - UPDATE TICKET DETAILS
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/tickets/{ticketId}")
-    public ResponseEntity<TicketDTO> updateTicketDetails(@PathVariable("ticketId") Long ticketId, @RequestBody Ticket newTicketDetails){
+    public ResponseEntity<TicketDTO> updateTicketDetails(@PathVariable("ticketId") Long ticketId, @RequestBody TicketDTO newTicketDetails){
         TicketDTO ticketDTO = ticketService.updateTicketDetails(ticketId, newTicketDetails);
         return ResponseEntity
                 .status(HttpStatus.OK)

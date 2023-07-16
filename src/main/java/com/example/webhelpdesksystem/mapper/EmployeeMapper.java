@@ -8,6 +8,8 @@ import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.List;
+
 @Configuration
 @Mapper
 public interface EmployeeMapper {
@@ -23,4 +25,7 @@ public interface EmployeeMapper {
     // UPDATE EMPLOYEE DETAILS
     @Mapping(target="id", ignore = true)
     void updateEmployeeDetails(EmployeeDTO newEmployeeDTODetails, @MappingTarget Employee employee);
+
+    // FROM LIST EMPLOYEE TO LIST DTO
+    List<EmployeeDTO> updateListEmployeeToDTO(List<Employee> employeeList);
 }

@@ -23,10 +23,10 @@ public interface TicketService {
     List<EmployeeDTO> getWatchersByTicketNumber(Long ticket_number);
 
     // POST - CREATE TICKET
-    TicketDTO createTicket(Ticket ticket);
+    TicketDTO createTicket(TicketDTO ticketDTO);
 
     // PUT - UPDATE TICKET
-    TicketDTO updateTicketDetails(Long ticketId, Ticket newTicketDetails) throws TicketNotFoundException;
+    TicketDTO updateTicketDetails(Long ticketId, TicketDTO newTicketDetails) throws TicketNotFoundException;
 
     // DEL - DELETE  TICKET
     void deleteTicket(Long ticketId) throws TicketNotFoundException;

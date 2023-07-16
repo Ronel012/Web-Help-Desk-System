@@ -4,7 +4,6 @@ import com.example.webhelpdesksystem.model.Employee;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import javax.persistence.*;
 import java.util.List;
 
 @AllArgsConstructor
@@ -29,7 +28,7 @@ public class TicketDTO {
     //watchers is a list of type "Employee"
     private List<Employee> watchers;
 
-    private enum Severity {
+    public enum Severity {
         LOW,
         NORMAL,
         MAJOR,
@@ -37,7 +36,7 @@ public class TicketDTO {
     }
 
     // CONST STATUS
-    private enum Status {
+    public enum Status {
         NEW,
         ASSIGNED,
         IN_PROGRESS,
